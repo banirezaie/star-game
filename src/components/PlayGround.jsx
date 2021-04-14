@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { range, random } from "lodash";
+import { random } from "lodash"
 import { NumberButton } from "./NumberButton";
-import { GrStar } from "react-icons/gr";
+import { DisplayStars } from "./DisplayStars"
 import "./components.css";
 import { Col, Container, Row } from "react-bootstrap";
 // import color from "../colors.json"
@@ -16,12 +16,10 @@ export const PlayGround = () => {
     <Container className='contain'>
       <Row>
         <Col>
-          {range(1, stars).map(starId => (
-            <GrStar key={starId} className='stars' />
-          ))}
+          <DisplayStars stars={stars} />
         </Col>
         <Col>
-            <NumberButton   />
+          <NumberButton />
         </Col>
       </Row>
     </Container>
