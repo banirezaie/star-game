@@ -1,0 +1,6 @@
+{
+  "unavailable": "limegreen",
+  "available": "lightgrey",
+  "wrong": "firebrick",
+  "candidate": "lightskyblue"
+}
