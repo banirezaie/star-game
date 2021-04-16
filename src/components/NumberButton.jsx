@@ -1,23 +1,19 @@
-import { range } from "lodash"
+import { useState } from "react"
 import "./components.css"
 
-export const NumberButton = () => {
+export const NumberButton = props => {
+  const [colourStatus, setColourStatus] = useState(props.colourStatus)
   const handleClick = e => {
     return console.log(e.target.value)
   }
-  console.log(range(1, 10))
-
   return (
-    range(1, 10).map(num => (
-      <button
-        key={num}
-        value={num}
-        className='buttons'
-        onClick={handleClick}
-        style={{ backgroundColor: "grey" }}
-      >
-        {num}
-      </button>
-    ))
+    <button
+      value={props.number}
+      className='buttons'
+      onClick={handleClick}
+      style={{ backgroundColor: colourStatus }}
+    >
+      {props.number}
+    </button>
   )
 }
