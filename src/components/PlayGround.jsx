@@ -24,6 +24,20 @@ export const PlayGround = () => {
     return color.available
   }
 
+  const onNumberClick = (number, status) => {
+    //candidate from unavailable numbers
+    if (!number.includes(availableNums)) {
+      return
+    }
+    //candidate
+    if (number < 2) {
+      return
+    }
+    //candidate === stars
+
+    //candidate more than stars
+  }
+
   return (
     <Container className='contain'>
       <Row>
@@ -37,6 +51,7 @@ export const PlayGround = () => {
                 colourStatus={handleColour(num)}
                 key={num}
                 number={num}
+                onClick={onNumberClick()}
               />
             )
           })}

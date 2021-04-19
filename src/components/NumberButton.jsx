@@ -1,17 +1,15 @@
-import { useState } from "react"
 import "./components.css"
 
 export const NumberButton = props => {
-  const [colourStatus, setColourStatus] = useState(props.colourStatus)
   const handleClick = e => {
-    return console.log(e.target.value)
+    return props.onClick((e.target.value, props.colourStatus))
   }
   return (
     <button
       value={props.number}
       className='buttons'
       onClick={handleClick}
-      style={{ backgroundColor: colourStatus }}
+      style={{ backgroundColor: props.colourStatus }}
     >
       {props.number}
     </button>
