@@ -10,7 +10,7 @@ export const PlayGround = () => {
   const [availableNums, setAvailableNums] = useState(range(1, 10))
   const [candidateNums, setCandidateNums] = useState([])
   const isCandidateWrong = sum(candidateNums) > stars
-  console.log("sum of candiates is: ", sum(candidateNums))
+  console.log("sum of candidates is: ", sum(candidateNums))
   const colourStatus = num => {
     if (!availableNums.includes(num)) {
       return color.unavailable
@@ -24,7 +24,10 @@ export const PlayGround = () => {
     if (currentStatus === color.unavailable) {
       return
     }
-    const newCandidateNums = candidateNums.concat(number)
+    const newCandidateNums =
+      currentStatus === color.available
+        ? candidateNums.concat(number)
+        : candidateNums.filter(cn => cn !== number)
     if (sum(newCandidateNums) !== stars) {
       setCandidateNums(newCandidateNums)
     } else {
