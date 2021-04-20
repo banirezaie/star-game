@@ -1,6 +1,11 @@
 import { useState } from "react"
 import { random, range, sum } from "lodash"
-import { NumberButton, DisplayStars, RandomSumIn } from "./components/index"
+import {
+  NumberButton,
+  DisplayStars,
+  RandomSumIn,
+  PlayAgain,
+} from "./components/index"
 import { Col, Container, Row } from "react-bootstrap"
 import "./components/components.css"
 import color from "./colors.json"
@@ -9,6 +14,7 @@ export const PlayGround = () => {
   const [stars, setStars] = useState(random(1, 9))
   const [availableNums, setAvailableNums] = useState(range(1, 10))
   const [candidateNums, setCandidateNums] = useState([])
+  const gameIsDone = availableNums.length === 0
   const isCandidateWrong = sum(candidateNums) > stars
   console.log("sum of candidates is: ", sum(candidateNums))
   const colourStatus = num => {
@@ -43,9 +49,7 @@ export const PlayGround = () => {
   return (
     <Container className='contain'>
       <Row>
-        <Col>
-          <DisplayStars stars={stars} />
-        </Col>
+        <Col>{gameIsDone ? <PlayAgain /> : <DisplayStars stars={stars} />}</Col>
         <Col>
           {range(1, 10).map(num => {
             return (
