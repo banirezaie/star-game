@@ -1,20 +1,17 @@
-import { useState } from "react";
+import { useState } from "react"
 import { random, range, sum } from "lodash"
-import { NumberButton } from "./NumberButton";
-import { DisplayStars } from "./DisplayStars"
-import { Col, Container, Row } from "react-bootstrap";
-import "./components.css"
-import color from "../colors.json"
+import { NumberButton, DisplayStars, RandomSumIn } from "./components/index"
+import { Col, Container, Row } from "react-bootstrap"
+import "./components/components.css"
+import color from "./colors.json"
 
 export const PlayGround = () => {
   const [stars, setStars] = useState(random(1, 9))
   const [availableNums, setAvailableNums] = useState(range(1, 10))
   const [candidateNums, setCandidateNums] = useState([])
-
   const isCandidateWrong = sum(candidateNums) > stars
   console.log("sum of candiates is: ", sum(candidateNums))
-
-  const handleColour = num => {
+  const colourStatus = num => {
     if (!availableNums.includes(num)) {
       return color.unavailable
     }
@@ -23,19 +20,21 @@ export const PlayGround = () => {
     }
     return color.available
   }
-
-  const onNumberClick = (number, status) => {
-    //candidate from unavailable numbers
-    if (!number.includes(availableNums)) {
+  const onNumberClick = (number, currentStatus) => {
+    if (currentStatus === color.unavailable) {
       return
     }
-    //candidate
-    if (number < 2) {
-      return
+    const newCandidateNums = candidateNums.concat(number)
+    if (sum(newCandidateNums) !== stars) {
+      setCandidateNums(newCandidateNums)
+    } else {
+      const newAvailableNumbers = availableNums.filter(
+        n => !newCandidateNums.includes(n)
+      )
+      setStars(RandomSumIn(newAvailableNumbers, 9))
+      setAvailableNums(newAvailableNumbers)
+      setCandidateNums([])
     }
-    //candidate === stars
-
-    //candidate more than stars
   }
 
   return (
@@ -48,10 +47,10 @@ export const PlayGround = () => {
           {range(1, 10).map(num => {
             return (
               <NumberButton
-                colourStatus={handleColour(num)}
+                colourStatus={colourStatus(num)}
                 key={num}
                 number={num}
-                onClick={onNumberClick()}
+                onClick={onNumberClick}
               />
             )
           })}
@@ -59,4 +58,4 @@ export const PlayGround = () => {
       </Row>
     </Container>
   )
-};
+}
