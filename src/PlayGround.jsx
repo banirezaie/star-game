@@ -1,10 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { random, range, sum } from "lodash"
 import {
   NumberButton,
   DisplayStars,
   RandomSumIn,
   PlayAgain,
+  GameTimer,
 } from "./components/index"
 import { Col, Container, Row } from "react-bootstrap"
 import "./components/components.css"
@@ -14,6 +15,16 @@ export const PlayGround = () => {
   const [stars, setStars] = useState(random(1, 9))
   const [availableNums, setAvailableNums] = useState(range(1, 10))
   const [candidateNums, setCandidateNums] = useState([])
+  const [secondsLeft, setSecondsLeft] = useState(10)
+  //setInterval, setTimeout
+  // useEffect(() => {
+  //   if (secondsLeft > 0) {
+  //       setTimeout(() => {
+  //       setSecondsLeft(secondsLeft - 1)
+  //       }, 1000)
+  //   }
+  // }, [secondsLeft])
+
   const gameIsDone = availableNums.length === 0
   const isCandidateWrong = sum(candidateNums) > stars
   console.log("sum of candidates is: ", sum(candidateNums))
@@ -47,22 +58,33 @@ export const PlayGround = () => {
   }
 
   return (
-    <Container className='contain'>
-      <Row>
-        <Col>{gameIsDone ? <PlayAgain /> : <DisplayStars stars={stars} />}</Col>
-        <Col>
-          {range(1, 10).map(num => {
-            return (
-              <NumberButton
-                colourStatus={colourStatus(num)}
-                key={num}
-                number={num}
-                onClick={onNumberClick}
-              />
-            )
-          })}
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container className='contain'>
+        <Row>
+          <Col>
+            {gameIsDone ? <PlayAgain /> : <DisplayStars stars={stars} />}
+          </Col>
+          <Col>
+            {range(1, 10).map(num => {
+              return (
+                <NumberButton
+                  colourStatus={colourStatus(num)}
+                  key={num}
+                  number={num}
+                  onClick={onNumberClick}
+                />
+              )
+            })}
+          </Col>
+        </Row>
+      </Container>
+      <Container>
+        <Row>
+          <Col>
+            <GameTimer secondsLeft={secondsLeft} />
+          </Col>
+        </Row>
+      </Container>
+    </>
   )
 }
