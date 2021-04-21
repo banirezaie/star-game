@@ -11,23 +11,24 @@ import { Col, Container, Row } from "react-bootstrap"
 import "./components/components.css"
 import color from "./colors.json"
 
-export const PlayGround = () => {
+export const PlayGround = (props) => {
   const [stars, setStars] = useState(random(1, 9))
   const [availableNums, setAvailableNums] = useState(range(1, 10))
   const [candidateNums, setCandidateNums] = useState([])
   const [secondsLeft, setSecondsLeft] = useState(10)
   //setInterval, setTimeout
-  // useEffect(() => {
-  //   if (secondsLeft > 0) {
-  //       setTimeout(() => {
-  //       setSecondsLeft(secondsLeft - 1)
-  //       }, 1000)
-  //   }
-  // }, [secondsLeft])
+  useEffect(() => {
+    if (secondsLeft > 0 && availableNums.length > 0) {
+      const timerId = setTimeout(() => {
+        setSecondsLeft(secondsLeft - 1)
+      }, 1000)
+      return () => clearTimeout(timerId)
+    }
+  })
 
-  const gameIsDone = availableNums.length === 0
+  const gameStatus = availableNums.length === 0 ? 'Won' : secondsLeft === 0 ? 'lost' : 'active'
+
   const isCandidateWrong = sum(candidateNums) > stars
-  console.log("sum of candidates is: ", sum(candidateNums))
   const colourStatus = num => {
     if (!availableNums.includes(num)) {
       return color.unavailable
@@ -38,7 +39,7 @@ export const PlayGround = () => {
     return color.available
   }
   const onNumberClick = (number, currentStatus) => {
-    if (currentStatus === color.unavailable) {
+    if ( gameStatus !== 'active' || currentStatus === color.unavailable) {
       return
     }
     const newCandidateNums =
@@ -62,7 +63,11 @@ export const PlayGround = () => {
       <Container className='contain'>
         <Row>
           <Col>
-            {gameIsDone ? <PlayAgain /> : <DisplayStars stars={stars} />}
+            {gameStatus !== "active" ? (
+              <PlayAgain onClick={props.startNewGame} gameStatus={gameStatus} />
+            ) : (
+              <DisplayStars stars={stars} />
+            )}
           </Col>
           <Col>
             {range(1, 10).map(num => {

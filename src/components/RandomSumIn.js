@@ -14,7 +14,6 @@ export const RandomSumIn = (arr, max) => {
     }
   }
   const unique = [...new Set(sums)]
-  console.log("unique numbers should be: ", unique)
   return unique[random(unique.length - 1)]
 }
 
